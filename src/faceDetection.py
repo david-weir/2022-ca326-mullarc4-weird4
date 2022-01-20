@@ -2,11 +2,11 @@ from cv2 import cv2
 import sys
 
 # paths to the image and cascade names passed in as command-line arguments.
-imgPath, cascade = sys.argv[1], sys.argv[2]
+imgPath = sys.argv[1]
 
 # haar cascade - create a cascade initialized with the face cascade
 # Loads the face cascade (XML file containing data to detect faces) into memory
-faceCascade = cv2.CascadeClassifier(cascade)
+faceCascade = cv2.CascadeClassifier('./haar_cascades/haarcascade_frontalface_default.xml')
 
 # read the given image and convert it to greyscale
 image = cv2.imread(imgPath)

@@ -1,11 +1,8 @@
 from cv2 import cv2
-import sys
-
-cascade = sys.argv[1]
 
 # haar cascade - create a cascade initialized with the face cascade
 # Loads the face cascade (XML file containing data to detect faces) into memory
-faceCascade = cv2.CascadeClassifier(cascade)
+faceCascade = cv2.CascadeClassifier('./haar_cascades/haarcascade_frontalface_default.xml')
 
 webcam = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # set video source as default webcam
 
