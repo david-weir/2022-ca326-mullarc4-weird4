@@ -9,14 +9,16 @@ datasets = 'datasets'
 # creates a sub-folder of stored images for a given named person
 # name of sub-folder / folder name corresponds with the name of the person who's images are stored in the subfolder
 
-try:
-    subdata = sys.argv[1]
-except IndexError:
-    print("IndexError: Please provide a sub-folder name in the command line argument")
-    exit()
+subdata = sys.argv[1]
 
 # create the dataset folders
 path = os.path.join(datasets, subdata)
+
+# if datasets does not exist create it
+if not os.path.exists('datasets'):
+    os.mkdir('datasets')
+
+# if path (path to sub-folder dataset) is not an existing directory, create it
 if not os.path.isdir(path):
     os.mkdir(path)
 
