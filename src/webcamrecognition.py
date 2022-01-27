@@ -1,6 +1,7 @@
 import face_recognition
 import pickle
 import cv2
+from datetime import datetime
 
 # load the haar cascade in the cascade classifier
 faceCascade = cv2.CascadeClassifier('./haar_cascades/haarcascade_frontalface_alt2.xml')
@@ -11,6 +12,9 @@ print("Streaming...")
 
 # begin webcam feed
 webcam = cv2.VideoCapture(0)  # main camera capture at 0
+
+seen = []
+attendance = []  # list of student attendance and times
 
 # loop over frames from the video file stream
 while True:
@@ -57,7 +61,7 @@ while True:
             # loop over the matched indexes and maintain a count for each recognized face
             for i in matchedIds:
 
-                # Check the names at respective indexes we stored in matchedIdxs
+                # Check the names at respective indexes we stored in matchedIds
                 name = data["names"][i]
 
                 # increase count for that name
@@ -66,8 +70,16 @@ while True:
             # set the name which has highest count
             name = max(counts, key=counts.get)
 
+        if name not in seen:
+            student = []
+            student.append(name)
+            student.append(datetime.now().strftime("%H:%M:%S"))
+
+            attendance.append(student)
+
         # update the list of names
         names.append(name)
+        seen.append(name)
 
         # loop over the recognized faces
         for ((x, y, w, h), name) in zip(faces, names):
@@ -84,6 +96,12 @@ while True:
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
+rollbook_name = "RollBook " + datetime.today().strftime("%d.%m.%y") + ".txt"
+rollbook = open(rollbook_name, "w")
+
+for info in attendance:
+    rollbook.write(info[0] + ", " + info[1] + "\n")
 
 webcam.release()
 cv2.destroyAllWindows()

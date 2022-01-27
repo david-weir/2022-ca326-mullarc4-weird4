@@ -9,7 +9,10 @@ datasets = 'datasets'
 # creates a sub-folder of stored images for a given named person
 # name of sub-folder / folder name corresponds with the name of the person who's images are stored in the subfolder
 
-subdata = sys.argv[1]
+if len(sys.argv) == 3:
+    subdata = sys.argv[1] + " " + sys.argv[2]
+else:
+    subdata = sys.argv[1]
 
 # create the dataset folders
 path = os.path.join(datasets, subdata)
