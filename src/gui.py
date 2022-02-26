@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter.messagebox import showerror, showwarning, showinfo
+from ctypes import windll
 from webcamrecognition import live_attendance
 from dataset_generator import generate
 from feature_extract import extract
@@ -8,6 +9,8 @@ from feature_extract import extract
 
 root = tk.Tk()
 root.title('Class Attendance and Face Mask Detectection')
+
+windll.shcore.SetProcessDpiAwareness(1)
 
 window_width = 900
 window_height = 600
@@ -21,25 +24,32 @@ center_x = int(screen_width/2 - window_width / 2)
 center_y = int(screen_height/2 - window_height / 2)
 
 # set the position of the window to the center of the screen
-icon = './logo/mask.ico'
 root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
-root.iconbitmap(icon)
 
+root.iconbitmap('C:/Users/cianm/Third_Year_Project/2022-ca326-mullarc4-weird4/src/logo/face_mask.ico')
 
-message = tk.Label(root, text=
-          "\tCA326: Third Year Project: Class Attendance using Facial Recognition and Mask Detection\n"
-          "\n"
-          "\tWelcome to the user interface of our 3rd Year Project\n"
-          "\tUse the available commands below or see the user manual\n"
-          "\n"
-          "\tStudents:\n"
-          "\tDavid Weir (19433086)\n"
-          "\tCian Mullarkey (19763555)\n")
+# Create Label and add some text
+heading = tk.Label(root, text="CA326: Third Year Project: Class Attendance using Facial Recognition and Mask Detection",
+                   font=("Arial", 14))
 
-# label = ttk.Label(root)
-# label['text'] = 'Hi, there'
-# label.pack()
-#
+# using place method we can set the position of label
+heading.place(relx=0.0,
+                  rely=0.0,
+                  anchor='nw')
+
+message = tk.Label(root,
+                   text="Welcome to the user interface of our 3rd Year Project\n"
+                        "Use the available commands below or see the user manual\n"
+                        "\n"
+                        "Students:\n"
+                        "David Weir (19433086)\n"
+                        "Cian Mullarkey (19763555)\n",
+                   font=("Arial", 12))
+
+message.place(relx = 0.5,
+                   rely = 0.2,
+                   anchor = 'center')
+
 def data_gen():
     # declaring string variable
     # for storing name and password
@@ -57,7 +67,6 @@ def data_gen():
         else:
             print("The dataset is called : " + first_name + " " + last_name)
             print("Generating dataset")
-            # CREATE ERROR IF ONLY 1 NAME GIVEN !!!!!!
             generate(first_name, last_name)
             print("Dataset generated")
 
@@ -83,11 +92,12 @@ def data_gen():
     sub_btn = tk.Button(root, text='Submit', command=submit)
 
 
-    first_name_label.pack()
-    first_name_entry.pack()
-    last_name_label.pack()
-    last_name_entry.pack()
-    sub_btn.pack()
+    first_name_label.place(relx = 0.4, rely = 0.7, anchor ='center')
+    first_name_entry.place(relx = 0.6, rely = 0.7, anchor ='center')
+    last_name_label.place(relx = 0.4, rely = 0.8, anchor ='center')
+    last_name_entry.place(relx = 0.6, rely = 0.8, anchor ='center')
+    sub_btn.place(relx = 0.5, rely = 0.9, anchor ='center')
+#CLICLKING GENERATE BUTTON SHOWS/HIDES TEXT PROMPT !!!!!!!
 
 def feat_ext():
     print("Extracting Features")
@@ -97,14 +107,26 @@ def feat_ext():
 def attend():
     live_attendance()
 
+# def user_manual():
+
+usrman_button = ttk.Button(root, text='User Manual', command=data_gen)
 data_button = ttk.Button(root, text='Generate Dataset', command=data_gen)
 extract_button = ttk.Button(root, text='Extract Features', command=feat_ext)
 attend_button = ttk.Button(root, text='Attendance', command=attend)
 
 
-message.pack()
-attend_button.pack()
-extract_button.pack()
-data_button.pack()
+usrman_button.place(relx = 1.0,
+                   rely = 1.0,
+                   anchor ='se')
+
+attend_button.place(relx = 0.5,
+                   rely = 0.4,
+                   anchor ='center')
+extract_button.place(relx = 0.5,
+                   rely = 0.5,
+                   anchor = 'center')
+data_button.place(relx = 0.5,
+                   rely = 0.6,
+                   anchor = 'center')
 
 root.mainloop()
