@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from webcamrecognition import live_attendance
-# from dataset_generator import generate
+from dataset_generator import generate
 from feature_extract import extract
 
 
@@ -20,8 +20,9 @@ center_x = int(screen_width/2 - window_width / 2)
 center_y = int(screen_height/2 - window_height / 2)
 
 # set the position of the window to the center of the screen
+icon = './logo/mask.ico'
 root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
-# root.iconbitmap('./logo/mask.ico')
+root.iconbitmap(icon)
 
 
 message = tk.Label(root, text=
@@ -33,15 +34,55 @@ message = tk.Label(root, text=
           "\tStudents:\n"
           "\tDavid Weir (19433086)\n"
           "\tCian Mullarkey (19763555)\n")
-message.pack()
 
 # label = ttk.Label(root)
 # label['text'] = 'Hi, there'
 # label.pack()
 #
 def data_gen():
-    print("Generating Dataset")
-# generate()
+    # declaring string variable
+    # for storing name and password
+    first_name_var = tk.StringVar()
+    last_name_var = tk.StringVar()
+
+    # defining a function that will
+    # get the name and
+    # print it on the screen
+    def submit():
+        first_name = first_name_var.get()
+        last_name = last_name_var.get()
+        print("The dataset is called : " + first_name + " " + last_name)
+        print("Generating dataset")
+        # CREATE ERROR IF ONLY 1 NAME GIVEN !!!!!!
+        generate(first_name, last_name)
+        print("Dataset generated")
+        first_name_var.set("")
+        last_name_var.set("")
+
+    # creating a label for
+    # name using widget Label
+    first_name_label = tk.Label(root, text='First Name', font=('calibre', 10, 'bold'))
+
+    # creating a entry for input
+    # name using widget Entry
+    first_name_entry = tk.Entry(root, textvariable=first_name_var, font=('calibre', 10, 'normal'))
+
+    # creating a label for password
+    last_name_label = tk.Label(root, text='Last Name', font=('calibre', 10, 'bold'))
+
+    # creating a entry for password
+    last_name_entry = tk.Entry(root, textvariable=last_name_var, font=('calibre', 10, 'normal'))
+
+    # creating a button using the widget
+    # Button that will call the submit function
+    sub_btn = tk.Button(root, text='Submit', command=submit)
+
+
+    first_name_label.pack()
+    first_name_entry.pack()
+    last_name_label.pack()
+    last_name_entry.pack()
+    sub_btn.pack()
 
 def feat_ext():
     print("Extracting Features")
@@ -51,31 +92,14 @@ def feat_ext():
 def attend():
     live_attendance()
 
-data_button = ttk.Button(root, text='Generate Dataset (eventually)', command=data_gen)
-extract_button = ttk.Button(root, text='Build Recognition Model', command=feat_ext)
+data_button = ttk.Button(root, text='Generate Dataset', command=data_gen)
+extract_button = ttk.Button(root, text='Extract Features', command=feat_ext)
 attend_button = ttk.Button(root, text='Attendance', command=attend)
 
-data_button.pack()
-extract_button.pack()
+
+message.pack()
 attend_button.pack()
-
-# def select(option):
-#     print(option)
-#
-#
-# ttk.Button(root, text='Generate New Dataset', command=lambda: select('Generat New Dataset')).pack()
-# ttk.Button(root, text='Build Recognition Model',command=lambda: select('Build Recognition Model')).pack()
-# ttk.Button(root, text='Attendance', command=lambda: select('Attendance')).pack()
-# #
-# def return_pressed(event):
-#     print('Return key pressed.')
-# btn = ttk.Button(root, text='Save')
-# btn.bind('<Return>', return_pressed)
-#
-#
-# btn.focus()
-# btn.pack(expand=True)
-
-
+extract_button.pack()
+data_button.pack()
 
 root.mainloop()
