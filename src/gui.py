@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter.messagebox import showerror, showwarning, showinfo
 from webcamrecognition import live_attendance
 from dataset_generator import generate
 from feature_extract import extract
@@ -51,13 +52,17 @@ def data_gen():
     def submit():
         first_name = first_name_var.get()
         last_name = last_name_var.get()
-        print("The dataset is called : " + first_name + " " + last_name)
-        print("Generating dataset")
-        # CREATE ERROR IF ONLY 1 NAME GIVEN !!!!!!
-        generate(first_name, last_name)
-        print("Dataset generated")
-        first_name_var.set("")
-        last_name_var.set("")
+        if len(first_name) == 0 or len(last_name) == 0:
+            showerror(title='Error', message='A first and second name must be entered.')
+        else:
+            print("The dataset is called : " + first_name + " " + last_name)
+            print("Generating dataset")
+            # CREATE ERROR IF ONLY 1 NAME GIVEN !!!!!!
+            generate(first_name, last_name)
+            print("Dataset generated")
+
+            first_name_var.set("")
+            last_name_var.set("")
 
     # creating a label for
     # name using widget Label
