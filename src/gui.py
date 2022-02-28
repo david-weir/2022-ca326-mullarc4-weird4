@@ -26,16 +26,26 @@ center_y = int(screen_height/2 - window_height / 2)
 # set the position of the window to the center of the screen
 root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 
-root.iconbitmap('C:/Users/cianm/Third_Year_Project/2022-ca326-mullarc4-weird4/src/logo/face_mask.ico')
+root.iconbitmap('../src/icon/face_mask.ico')
+
+bg = PhotoImage(file='../src/background/masks.png')
+#
+# # Show image using label
+# label1 = Label(root, image=bg)
+# label1.place(x=0, y=0)
+#
+# # Create Frame
+# frame1 = Frame(root)
+# frame1.pack(pady=20)
 
 # Create Label and add some text
-heading = tk.Label(root, text="CA326: Third Year Project: Class Attendance using Facial Recognition and Mask Detection",
-                   font=("Arial", 14))
+heading = tk.Label(root, text="CA326: Third Year Project: Class Attendance using\n Facial Recognition and Mask Detection",
+                   font=("Arial", 22))
 
 # using place method we can set the position of label
-heading.place(relx=0.0,
-                  rely=0.0,
-                  anchor='nw')
+heading.place(relx=0.5,
+                  rely=0.1,
+                  anchor='center')
 
 message = tk.Label(root,
                    text="Welcome to the user interface of our 3rd Year Project\n"
@@ -47,7 +57,7 @@ message = tk.Label(root,
                    font=("Arial", 12))
 
 message.place(relx = 0.5,
-                   rely = 0.2,
+                   rely = 0.3,
                    anchor = 'center')
 
 def data_gen():
@@ -120,13 +130,13 @@ usrman_button.place(relx = 1.0,
                    anchor ='se')
 
 attend_button.place(relx = 0.5,
-                   rely = 0.4,
+                   rely = 0.5,
                    anchor ='center')
 extract_button.place(relx = 0.5,
-                   rely = 0.5,
+                   rely = 0.6,
                    anchor = 'center')
 data_button.place(relx = 0.5,
-                   rely = 0.6,
+                   rely = 0.7,
                    anchor = 'center')
 
 root.mainloop()
