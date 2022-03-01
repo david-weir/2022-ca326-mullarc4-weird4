@@ -56,6 +56,7 @@ message = tk.Label(root,
                    text="Welcome to the user interface of our 3rd Year Project\n"
                         "Use the available commands below or see the user manual\n"
                         "\n"
+                        "\n"
                         "Students:\n"
                         "David Weir (19433086)\n"
                         "Cian Mullarkey (19763555)\n",
@@ -64,69 +65,73 @@ message = tk.Label(root,
 
 message.place(relx=0.5, rely=0.4, anchor='center')
 
+
 # calls feature extract program
 def feat_ext():
     print("Extracting Features")
     extract()
     print("Extracted facial features successfully")
 
+
 # calls webcam recognition program
 def attend():
     live_attendance()
 
+
 # def user_manual():
 
-def data_gen():
-    # declaring string variables for storing fname and lname
-    first_name_var = tk.StringVar()
-    last_name_var = tk.StringVar()
+# defining a function that will get the fname and lname from the user and pass them as
+# parameters through to the dataset generator function
+def submit():
+    first_name = first_name_var.get()
+    last_name = last_name_var.get()
 
-    # defining a function that will get the fname and lname from the user and pass them as
-    # parameters through to the dataset generator function
-    def submit():
-        first_name = first_name_var.get()
-        last_name = last_name_var.get()
+    if len(first_name) == 0 or len(last_name) == 0:
+        showerror(title='Error', message='A first and last name must be entered.')
+    else:
+        print("Generating dataset")
+        print("The dataset is called: " + first_name + " " + last_name)
+        generate(first_name, last_name)
+        print("Dataset generated")
 
-        if len(first_name) == 0 or len(last_name) == 0:
-            showerror(title='Error', message='A first and second name must be entered.')
-        else:
-            print("The dataset is called : " + first_name + " " + last_name)
-            print("Generating dataset")
-            generate(first_name, last_name)
-            print("Dataset generated")
-
-            first_name_var.set("")
-            last_name_var.set("")
+        first_name_var.set("")
+        last_name_var.set("")
 
     # !!!!! CLICLKING GENERATE BUTTON SHOWS/HIDES TEXT PROMPT !!!!!!!
 
-    # create labels and entries for fname and lname
-    first_name_label = tk.Label(root, text='First Name', font=('calibre', 10, 'bold'))
-    first_name_label.place(relx=0.4, rely=0.85, anchor='center')
 
-    first_name_entry = tk.Entry(root, textvariable=first_name_var, font=('calibre', 10, 'normal'))
-    first_name_entry.place(relx=0.6, rely=0.85, anchor='center')
+# declaring string variables for storing fname and lname
+first_name_var = tk.StringVar()
+last_name_var = tk.StringVar()
 
-    last_name_label = tk.Label(root, text='Last Name', font=('calibre', 10, 'bold'))
-    last_name_label.place(relx=0.4, rely=0.9, anchor='center')
+# create labels and entries for fname and lname
+first_name_label = tk.Label(root, text='First Name', font=('calibre', 10, 'bold'))
+first_name_label.place(relx=0.4, rely=0.6, anchor='center')
 
-    last_name_entry = tk.Entry(root, textvariable=last_name_var, font=('calibre', 10, 'normal'))
-    last_name_entry.place(relx=0.6, rely=0.9, anchor='center')
+first_name_entry = tk.Entry(root, textvariable=first_name_var, font=('calibre', 10, 'normal'))
+first_name_entry.place(relx=0.6, rely=0.6, anchor='center')
 
-    # submit button
-    sub_btn = tk.Button(root, text='Submit', command=submit)
-    sub_btn.place(relx=0.5, rely=0.95, anchor='center')
+last_name_label = tk.Label(root, text='Last Name', font=('calibre', 10, 'bold'))
+last_name_label.place(relx=0.4, rely=0.65, anchor='center')
+
+last_name_entry = tk.Entry(root, textvariable=last_name_var, font=('calibre', 10, 'normal'))
+last_name_entry.place(relx=0.6, rely=0.65, anchor='center')
+
+# submit button
+sub_btn = tk.Button(root, text='Generate New Dataset', command=submit)
+sub_btn.place(relx=0.5, rely=0.7, anchor='center')
+
 
 attend_button = ttk.Button(root, text='Attendance', command=attend)
-attend_button.place(relx=0.5, rely=0.6, anchor='center')
+attend_button.place(relx=0.5, rely=0.9, anchor='center')
 
 extract_button = ttk.Button(root, text='Extract Features', command=feat_ext)
-extract_button.place(relx=0.5, rely=0.7, anchor='center')
+extract_button.place(relx=0.5, rely=0.8, anchor='center')
 
-data_button = ttk.Button(root, text='Generate Dataset', command=data_gen)
-data_button.place(relx=0.5, rely=0.8, anchor='center')
+# data_button = ttk.Button(root, text='Generate Dataset', command=data_gen)
+# data_button.place(relx=0.5, rely=0.8, anchor='center')
 
-usrman_button = ttk.Button(root, text='User Manual', command=data_gen)
-usrman_button.place(relx=1.0, rely=1.0, anchor='se')
+usrman_button = ttk.Button(root, text='User Manual')
+usrman_button.place(relx=0.5, rely=0.37, anchor='center')
 
 root.mainloop()
