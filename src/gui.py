@@ -1,52 +1,57 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, Canvas, PhotoImage
 from tkinter.messagebox import showerror, showwarning, showinfo
 from ctypes import windll
+from PIL import ImageTk, Image
 from webcamrecognition import live_attendance
 from dataset_generator import generate
 from feature_extract import extract
 
+# fix text bluriness on Windows
+windll.shcore.SetProcessDpiAwareness(1)
 
+# window title
 root = tk.Tk()
 root.title('Class Attendance and Face Mask Detectection')
 
-windll.shcore.SetProcessDpiAwareness(1)
-
-window_width = 900
-window_height = 600
+# set window size
+window_width = 1200
+window_height = 800
 
 # get the screen dimension
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 # find the center point
-center_x = int(screen_width/2 - window_width / 2)
-center_y = int(screen_height/2 - window_height / 2)
+center_x = int(screen_width / 2 - window_width / 2)
+center_y = int(screen_height / 2 - window_height / 2)
 
 # set the position of the window to the center of the screen
 root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 
+# set window icon
 root.iconbitmap('../src/icon/face_mask.ico')
 
-bg = PhotoImage(file='../src/background/masks.png')
-#
-# # Show image using label
-# label1 = Label(root, image=bg)
-# label1.place(x=0, y=0)
-#
-# # Create Frame
-# frame1 = Frame(root)
-# frame1.pack(pady=20)
+# create canvas
+canvas = Canvas(root, width=400, height=400)
+canvas.pack(fill="both", expand=True)
 
-# Create Label and add some text
-heading = tk.Label(root, text="CA326: Third Year Project: Class Attendance using\n Facial Recognition and Mask Detection",
-                   font=("Arial", 22))
+# set window background
+bg = ImageTk.PhotoImage(Image.open('../src/background/masks.jpg'))  # PIL solution
+canvas.create_image(0, 0, anchor="nw", image=bg)
 
-# using place method we can set the position of label
-heading.place(relx=0.5,
-                  rely=0.1,
-                  anchor='center')
+# create header label
+heading = tk.Label(root,
+                   text="CA326:\n"
+                        "Third Year Project: Class Attendance using\n"
+                        "Facial Recognition and Mask Detection",
+                   font=("Arial", 22),
+                   bg="white")
 
+# set the position of label
+heading.place(relx=0.5, rely=0.1, anchor='center')
+
+# set welcome intro label
 message = tk.Label(root,
                    text="Welcome to the user interface of our 3rd Year Project\n"
                         "Use the available commands below or see the user manual\n"
@@ -54,24 +59,34 @@ message = tk.Label(root,
                         "Students:\n"
                         "David Weir (19433086)\n"
                         "Cian Mullarkey (19763555)\n",
-                   font=("Arial", 12))
+                   font=("Arial", 12),
+                   bg="white")
 
-message.place(relx = 0.5,
-                   rely = 0.3,
-                   anchor = 'center')
+message.place(relx=0.5, rely=0.4, anchor='center')
+
+# calls feature extract program
+def feat_ext():
+    print("Extracting Features")
+    extract()
+    print("Extracted facial features successfully")
+
+# calls webcam recognition program
+def attend():
+    live_attendance()
+
+# def user_manual():
 
 def data_gen():
-    # declaring string variable
-    # for storing name and password
+    # declaring string variables for storing fname and lname
     first_name_var = tk.StringVar()
     last_name_var = tk.StringVar()
 
-    # defining a function that will
-    # get the name and
-    # print it on the screen
+    # defining a function that will get the fname and lname from the user and pass them as
+    # parameters through to the dataset generator function
     def submit():
         first_name = first_name_var.get()
         last_name = last_name_var.get()
+
         if len(first_name) == 0 or len(last_name) == 0:
             showerror(title='Error', message='A first and second name must be entered.')
         else:
@@ -83,60 +98,35 @@ def data_gen():
             first_name_var.set("")
             last_name_var.set("")
 
-    # creating a label for
-    # name using widget Label
+    # !!!!! CLICLKING GENERATE BUTTON SHOWS/HIDES TEXT PROMPT !!!!!!!
+
+    # create labels and entries for fname and lname
     first_name_label = tk.Label(root, text='First Name', font=('calibre', 10, 'bold'))
+    first_name_label.place(relx=0.4, rely=0.85, anchor='center')
 
-    # creating a entry for input
-    # name using widget Entry
     first_name_entry = tk.Entry(root, textvariable=first_name_var, font=('calibre', 10, 'normal'))
+    first_name_entry.place(relx=0.6, rely=0.85, anchor='center')
 
-    # creating a label for password
     last_name_label = tk.Label(root, text='Last Name', font=('calibre', 10, 'bold'))
+    last_name_label.place(relx=0.4, rely=0.9, anchor='center')
 
-    # creating a entry for password
     last_name_entry = tk.Entry(root, textvariable=last_name_var, font=('calibre', 10, 'normal'))
+    last_name_entry.place(relx=0.6, rely=0.9, anchor='center')
 
-    # creating a button using the widget
-    # Button that will call the submit function
+    # submit button
     sub_btn = tk.Button(root, text='Submit', command=submit)
+    sub_btn.place(relx=0.5, rely=0.95, anchor='center')
 
+attend_button = ttk.Button(root, text='Attendance', command=attend)
+attend_button.place(relx=0.5, rely=0.6, anchor='center')
 
-    first_name_label.place(relx = 0.4, rely = 0.7, anchor ='center')
-    first_name_entry.place(relx = 0.6, rely = 0.7, anchor ='center')
-    last_name_label.place(relx = 0.4, rely = 0.8, anchor ='center')
-    last_name_entry.place(relx = 0.6, rely = 0.8, anchor ='center')
-    sub_btn.place(relx = 0.5, rely = 0.9, anchor ='center')
-#CLICLKING GENERATE BUTTON SHOWS/HIDES TEXT PROMPT !!!!!!!
+extract_button = ttk.Button(root, text='Extract Features', command=feat_ext)
+extract_button.place(relx=0.5, rely=0.7, anchor='center')
 
-def feat_ext():
-    print("Extracting Features")
-    extract()
-    print("Extracted facial features successfully")
-
-def attend():
-    live_attendance()
-
-# def user_manual():
+data_button = ttk.Button(root, text='Generate Dataset', command=data_gen)
+data_button.place(relx=0.5, rely=0.8, anchor='center')
 
 usrman_button = ttk.Button(root, text='User Manual', command=data_gen)
-data_button = ttk.Button(root, text='Generate Dataset', command=data_gen)
-extract_button = ttk.Button(root, text='Extract Features', command=feat_ext)
-attend_button = ttk.Button(root, text='Attendance', command=attend)
-
-
-usrman_button.place(relx = 1.0,
-                   rely = 1.0,
-                   anchor ='se')
-
-attend_button.place(relx = 0.5,
-                   rely = 0.5,
-                   anchor ='center')
-extract_button.place(relx = 0.5,
-                   rely = 0.6,
-                   anchor = 'center')
-data_button.place(relx = 0.5,
-                   rely = 0.7,
-                   anchor = 'center')
+usrman_button.place(relx=1.0, rely=1.0, anchor='se')
 
 root.mainloop()
