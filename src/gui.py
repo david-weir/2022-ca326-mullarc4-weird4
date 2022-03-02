@@ -1,13 +1,12 @@
 import tkinter as tk
-from tkinter import ttk, Canvas, PhotoImage, messagebox, Toplevel
+import subprocess
+from tkinter import ttk, Canvas, PhotoImage, messagebox, Toplevel, filedialog
 from tkinter.messagebox import showerror, showwarning, showinfo
 from ctypes import windll
 from PIL import ImageTk, Image
-# import docx
 from webcamrecognition import live_attendance
 from dataset_generator import generate
 from feature_extract import extract
-
 
 # fix text bluriness on Windows
 windll.shcore.SetProcessDpiAwareness(1)
@@ -68,21 +67,9 @@ message = tk.Label(root,
 
 message.place(relx=0.5, rely=0.4, anchor='center')
 
-
 def user_manual():
-
-    # Toplevel object which will
-    # be treated as a new window
-    manual_Window = Toplevel(root)
-
-    manual_Window.geometry(set_window_size(manual_Window))
-
-    # sets the title of the
-    # Toplevel widget
-    manual_Window.title("User Manual")
-
-    # doc = docx.Document(my_word_file.docx")
-
+    path = "../docs/3-final-reports/User Manual.pdf"
+    subprocess.Popen([path], shell=True)
 
 # defining a function that will get the fname and lname from the user and pass them as
 # parameters through to the dataset generator function
@@ -123,7 +110,6 @@ last_name_label.place(relx=0.4, rely=0.65, anchor='center')
 last_name_entry = tk.Entry(root, textvariable=last_name_var, font=('calibre', 10, 'normal'))
 last_name_entry.place(relx=0.6, rely=0.65, anchor='center')
 
-
 # calls feature extract program
 def feat_ext():
     MsgBox = tk.messagebox.askquestion('Feature Extract', 'Do you wish to begin extracting features from the datasets?\n'
@@ -134,7 +120,6 @@ def feat_ext():
         extract()
         messagebox.showinfo("Feature Extract", "Extracted facial features successfully.")
         print("Extracted facial features successfully")
-
 
 # calls webcam recognition program
 def attend():
@@ -150,7 +135,6 @@ def attend():
         messagebox.showinfo("Live Attendance", "Stream Ended.")
         print("Stream Ended")
 
-
 usrman_button = ttk.Button(root, text='User Manual', command=user_manual)
 usrman_button.place(relx=0.5, rely=0.37, anchor='center')
 
@@ -162,7 +146,6 @@ attend_button.place(relx=0.5, rely=0.9, anchor='center')
 
 extract_button = ttk.Button(root, text='Extract Features', command=feat_ext)
 extract_button.place(relx=0.5, rely=0.8, anchor='center')
-
 
 set_window_size(root)
 root.mainloop()
