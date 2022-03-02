@@ -1,11 +1,13 @@
 import tkinter as tk
-from tkinter import ttk, Canvas, PhotoImage, messagebox
+from tkinter import ttk, Canvas, PhotoImage, messagebox, Toplevel
 from tkinter.messagebox import showerror, showwarning, showinfo
 from ctypes import windll
 from PIL import ImageTk, Image
+# import docx
 from webcamrecognition import live_attendance
 from dataset_generator import generate
 from feature_extract import extract
+
 
 # fix text bluriness on Windows
 windll.shcore.SetProcessDpiAwareness(1)
@@ -14,20 +16,21 @@ windll.shcore.SetProcessDpiAwareness(1)
 root = tk.Tk()
 root.title('Class Attendance and Face Mask Detectection')
 
-# set window size
-window_width = 1200
-window_height = 800
+def set_window_size(window):
+    # set window size
+    window_width = 1200
+    window_height = 800
 
-# get the screen dimension
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
+    # get the screen dimension
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
 
-# find the center point
-center_x = int(screen_width / 2 - window_width / 2)
-center_y = int(screen_height / 2 - window_height / 2)
+    # find the center point
+    center_x = int(screen_width / 2 - window_width / 2)
+    center_y = int(screen_height / 2 - window_height / 2)
 
-# set the position of the window to the center of the screen
-root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
+    # set the position of the window to the center of the screen
+    window.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 
 # set window icon
 root.iconbitmap('../src/icon/face_mask.ico')
@@ -66,7 +69,19 @@ message = tk.Label(root,
 message.place(relx=0.5, rely=0.4, anchor='center')
 
 
-# def user_manual():
+def user_manual():
+
+    # Toplevel object which will
+    # be treated as a new window
+    manual_Window = Toplevel(root)
+
+    manual_Window.geometry(set_window_size(manual_Window))
+
+    # sets the title of the
+    # Toplevel widget
+    manual_Window.title("User Manual")
+
+    # doc = docx.Document(my_word_file.docx")
 
 
 # defining a function that will get the fname and lname from the user and pass them as
@@ -136,7 +151,7 @@ def attend():
         print("Stream Ended")
 
 
-usrman_button = ttk.Button(root, text='User Manual')
+usrman_button = ttk.Button(root, text='User Manual', command=user_manual)
 usrman_button.place(relx=0.5, rely=0.37, anchor='center')
 
 data_gen_btn = tk.Button(root, text='Generate New Dataset', command=data_gen)
@@ -149,4 +164,5 @@ extract_button = ttk.Button(root, text='Extract Features', command=feat_ext)
 extract_button.place(relx=0.5, rely=0.8, anchor='center')
 
 
+set_window_size(root)
 root.mainloop()
