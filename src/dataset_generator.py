@@ -37,7 +37,7 @@ def generate(fname, lname):
 
     # loop the program until we have 30 images of the user face
     img_count = 1
-    while img_count < 30:
+    while img_count <= 30:
         (_, image) = webcam.read()
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         faces = faceCascade.detectMultiScale(gray, 1.3, 4)
@@ -48,8 +48,7 @@ def generate(fname, lname):
             face = gray[y:y + h, x:x + w]
             face_resize = cv2.resize(face, (height, width))
             cv2.imwrite('% s/% s.png' % (path, img_count), face_resize)
-
-        img_count += 1
+            img_count += 1
 
         cv2.imshow('Generator', image)
         key = cv2.waitKey(10)
