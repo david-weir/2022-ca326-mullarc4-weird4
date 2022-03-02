@@ -55,6 +55,3 @@ def generate(fname, lname):
         key = cv2.waitKey(10)
         if key == 27:
             break
-
-# if __name__ == '__main__':
-#     generate("Cian", "Mullarkey")
