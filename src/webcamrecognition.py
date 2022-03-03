@@ -10,8 +10,9 @@ def live_attendance():
 
     model = load_model("./mask_detector.model")  # load trained model
 
-    labels_dict = {0: 'without mask', 1: 'mask'}
-    color_dict = {0: (0, 0, 255), 1: (0, 255, 0)}
+    # labels and colour dictionaries
+    labels_dict = {0: 'Mask', 1: 'No Mask'}
+    colour_dict = {0: (0, 255, 0), 1: (0, 0, 255)}
 
     size = 4
 
@@ -83,14 +84,6 @@ def live_attendance():
                 # set the name which has highest count
                 name = max(counts, key=counts.get)
 
-            # if name not in seen:
-            #     student = []
-            #     student.append(name)
-            #     student.append(datetime.now().strftime("%H:%M:%S"))
-            #
-            #     attendance.append(student)
-            #     seen.append(name)  # update list of seen students
-
             # update the list of names
             names.append(name)
 
@@ -121,10 +114,14 @@ def live_attendance():
                     seen.append(name)  # update list of seen students
 
                 # mark the detected face with a rectangle drawn on the display
-                cv2.rectangle(frame, (x, y), (x + w, y + h), color_dict[label], 2)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), colour_dict[label], 2)
 
                 # put the name of the recognised person/face on the screen
                 cv2.putText(frame, name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)
+
+                # Mask / No Mask Label
+                cv2.putText(frame, labels_dict[label], (x + 5, y + h + 25), cv2.FONT_HERSHEY_DUPLEX, 1,
+                            colour_dict[label], 2)
 
         cv2.imshow("Webcam", frame)  # display
 
