@@ -34,14 +34,14 @@ def set_window_size(window):
 
 
 # set window icon
-root.iconbitmap('../src/icon/face_mask.ico')
+root.iconbitmap('./icon/face_mask.ico')
 
 # create canvas
 canvas = Canvas(root, width=400, height=400)
 canvas.pack(fill="both", expand=True)
 
 # set window background
-bg = ImageTk.PhotoImage(Image.open('../src/background/masks.jpg'))  # PIL solution
+bg = ImageTk.PhotoImage(Image.open('./background/masks.jpg'))  # PIL solution
 canvas.create_image(0, 0, anchor="nw", image=bg)
 
 # create header label
