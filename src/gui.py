@@ -1,7 +1,7 @@
 import tkinter as tk
 import subprocess
-from tkinter import ttk, Canvas, PhotoImage, messagebox, Toplevel, filedialog
-from tkinter.messagebox import showerror, showwarning, showinfo
+from tkinter import ttk, Canvas, messagebox
+from tkinter.messagebox import showerror
 from ctypes import windll
 from PIL import ImageTk, Image
 from webcamrecognition import live_attendance
@@ -14,6 +14,7 @@ windll.shcore.SetProcessDpiAwareness(1)
 # window title
 root = tk.Tk()
 root.title('Class Attendance and Face Mask Detectection')
+
 
 def set_window_size(window):
     # set window size
@@ -30,6 +31,7 @@ def set_window_size(window):
 
     # set the position of the window to the center of the screen
     window.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
+
 
 # set window icon
 root.iconbitmap('../src/icon/face_mask.ico')
@@ -67,9 +69,11 @@ message = tk.Label(root,
 
 message.place(relx=0.5, rely=0.4, anchor='center')
 
+
 def user_manual():
     path = "../docs/3-final-reports/User Manual.pdf"
     subprocess.Popen([path], shell=True)
+
 
 # defining a function that will get the fname and lname from the user and pass them as
 # parameters through to the dataset generator function
@@ -93,16 +97,20 @@ def data_gen():
         first_name_var.set("")
         last_name_var.set("")
 
+
 # declaring string variables for storing fname and lname
 first_name_var = tk.StringVar()
 last_name_var = tk.StringVar()
+
 
 # create labels and entries for fname and lname
 first_name_label = tk.Label(root, text='First Name', font=('calibre', 10, 'bold'))
 first_name_label.place(relx=0.4, rely=0.6, anchor='center')
 
+
 first_name_entry = tk.Entry(root, textvariable=first_name_var, font=('calibre', 10, 'normal'))
 first_name_entry.place(relx=0.6, rely=0.6, anchor='center')
+
 
 last_name_label = tk.Label(root, text='Last Name', font=('calibre', 10, 'bold'))
 last_name_label.place(relx=0.4, rely=0.65, anchor='center')
@@ -110,9 +118,11 @@ last_name_label.place(relx=0.4, rely=0.65, anchor='center')
 last_name_entry = tk.Entry(root, textvariable=last_name_var, font=('calibre', 10, 'normal'))
 last_name_entry.place(relx=0.6, rely=0.65, anchor='center')
 
+
 # calls feature extract program
 def feat_ext():
-    MsgBox = tk.messagebox.askquestion('Feature Extract', 'Do you wish to begin extracting features from the datasets?\n'
+    MsgBox = tk.messagebox.askquestion('Feature Extract', 'Do you wish to begin extracting features from the '
+                                                          'datasets?\n '
                                                           'This may take up to a minute or two.',
                                        icon='info')
     if MsgBox == 'yes':
@@ -120,6 +130,7 @@ def feat_ext():
         extract()
         messagebox.showinfo("Feature Extract", "Extracted facial features successfully.")
         print("Extracted facial features successfully")
+
 
 # calls webcam recognition program
 def attend():
@@ -129,11 +140,11 @@ def attend():
                                        icon='info')
     if MsgBox == 'yes':
         # print("Streaming")
-        messagebox.showinfo("Live Attendance", "Beginning Stream.\n"
-                                        "Press 'Q' to end stream.")
+        messagebox.showinfo("Live Attendance", "Beginning Stream.\n" "Press 'Q' to end stream.")
         live_attendance()
         messagebox.showinfo("Live Attendance", "Stream Ended.")
         print("Stream Ended")
+
 
 usrman_button = ttk.Button(root, text='User Manual', command=user_manual)
 usrman_button.place(relx=0.5, rely=0.37, anchor='center')
