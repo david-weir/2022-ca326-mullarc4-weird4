@@ -6,7 +6,7 @@ This includes your Video Walkthrough and your Final documentation (Technical Spe
 
 Instructions:
 
-https://drive.google.com/file/d/1tcLghigl-zRkdzkN553KK7rptLD8Ao75/view?usp=sharing
+Link: https://drive.google.com/file/d/1ObUwj5jLrqUcowS-JE0w4WWqKJOjuAiZ/view?usp=sharing
 
 * Upload your video walk through to Google Drive.
 * Under sharing, allow anyone with the link to view the video.
