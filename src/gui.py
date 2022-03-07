@@ -1,11 +1,11 @@
 import tkinter as tk
 import subprocess
 from tkinter import ttk, Canvas, messagebox
-from tkinter.messagebox import showerror
+from tkinter.messagebox import showerror, showinfo, showwarning
 from ctypes import windll
 from PIL import ImageTk, Image
 from webcamrecognition import live_attendance
-from dataset_generator import generate
+from dataset_generator import generate, front, right, left
 from feature_extract import extract
 
 # fix text bluriness on Windows
@@ -91,7 +91,13 @@ def data_gen():
             print("Generating dataset")
             print("The dataset is called: " + first_name + " " + last_name)
             generate(first_name, last_name)
-            messagebox.showinfo("showinfo", "Dataset generated.")
+            messagebox.showwarning("Warning", "Look directly into your webcam.")
+            front()
+            messagebox.showwarning("Warning", "Look slightly to your right.")
+            right()
+            messagebox.showwarning("Warning", "Look slightly to your left.")
+            left()
+            messagebox.showinfo("Data Generator", "Dataset generated.")
             print("Dataset generated")
 
         first_name_var.set("")

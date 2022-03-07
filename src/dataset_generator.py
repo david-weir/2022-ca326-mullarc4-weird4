@@ -13,6 +13,7 @@ def generate(fname, lname):
 
     subdata = fname + " " + lname
     # create the dataset folders
+    global path
     path = os.path.join(datasets, subdata)
 
     # if datasets does not exist create it
@@ -23,24 +24,17 @@ def generate(fname, lname):
     if not os.path.isdir(path):
         os.mkdir(path)
 
-    (height, width) = (100, 130)  # set the image size
+    global height, width
+    (height, width)= (100, 130)  # set the image size
 
     # haar cascade - create a cascade initialized with the face cascade
     # Loads the face cascade (XML file containing data to detect faces) into memory
-    faceCascade = cv2.CascadeClassifier('./haar_cascades/haarcascade_frontalface_default.xml')
-
-    # fucntion calls
-    front(faceCascade, height, width, path)
-    time.sleep(5)
-    right(faceCascade, height, width, path)
-    time.sleep(5)
-    left(faceCascade, height, width, path)
-
-    cv2.destroyAllWindows()  # closes windows
+    global faceCascade
+    faceCascade  = cv2.CascadeClassifier('./haar_cascades/haarcascade_frontalface_default.xml')
 
 
 # function takes 30 images of a user's front facing face
-def front(faceCascade, height, width, path):
+def front():
     webcam = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # set video source as default webcam
 
     # loop the program until we have 30 images of the user face
@@ -65,7 +59,7 @@ def front(faceCascade, height, width, path):
 
 
 # takes 5 images of a user when looking right
-def right(faceCascade, height, width, path):
+def right():
     webcam = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # set video source as default webcam
 
     # loop the program until we have 5 images of the user face
@@ -90,7 +84,7 @@ def right(faceCascade, height, width, path):
 
 
 # takes 5 images of a user when looking left
-def left(faceCascade, height, width, path):
+def left():
     webcam = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # set video source as default webcam
 
     # loop the program until we have 5 images of the user face
@@ -112,3 +106,5 @@ def left(faceCascade, height, width, path):
         key = cv2.waitKey(10)
         if key == 27:
             break
+
+    cv2.destroyAllWindows()  # closes windows
